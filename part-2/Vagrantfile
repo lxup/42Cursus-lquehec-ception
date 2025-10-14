@@ -1,44 +1,55 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
-LOGIN="mkane"
-SERVER_IP="192.168.56.110"
+LOGIN = "mkane"
+SERVER_IP = "192.168.56.110"
 
 Vagrant.configure("2") do |config|
   config.vm.box = "hashicorp-education/ubuntu-24-04"
   config.vm.box_version = "0.1.0"
-
+  
   config.vm.provider "virtualbox" do |v|
     v.memory = 1024
     v.cpus = 1
   end
-
+  
   config.vm.synced_folder "./manifests", "/vagrant/manifests"
-
+  
   config.vm.define "#{LOGIN}S" do |server|
     server.vm.hostname = "#{LOGIN}S"
     server.vm.network "private_network", ip: SERVER_IP
-
+    
     server.vm.provision "shell", inline: <<-SHELL
-
       IFACE=$(ip -o -4 addr list | grep #{SERVER_IP} | awk '{print $2}')
-
+      
+      
       curl -sfL https://get.k3s.io | \
         INSTALL_K3S_EXEC="--node-ip=#{SERVER_IP} --flannel-iface=$IFACE" \
         sh -
-
+      
       sudo chmod 644 /etc/rancher/k3s/k3s.yaml
       mkdir -p /home/vagrant/.kube
       sudo cp /etc/rancher/k3s/k3s.yaml /home/vagrant/.kube/config
       sudo chown vagrant:vagrant /home/vagrant/.kube/config
-
+      
       kubectl apply -f /vagrant/manifests/
-
-      echo "deployment status:"
-      kubectl get pods
+      
+      echo ""
+      echo "====================================="
+      echo "Deployment Status"
+      echo "====================================="
+      echo ""
+      echo "NODES:"
       kubectl get nodes -o wide
-      kubectl get all -n kube-system
-
+      echo ""
+      echo "PODS (inception-of-things namespace):"
+      kubectl get pods -n inception-of-things -o wide
+      echo ""
+      echo "SERVICES:"
+      kubectl get svc -n inception-of-things
+      echo ""
+      echo "INGRESS:"
+      kubectl get ingress -n inception-of-things
     SHELL
   end
 end

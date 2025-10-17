@@ -17,13 +17,12 @@ spec:
         app: app-one
     spec:
       containers:
-        - name: hello-kubernetes
-          image: paulbouwer/hello-kubernetes:1.10.1
+        - name: http-echo
+          image: hashicorp/http-echo:latest
+          args:
+            - "-text=Hello from app1"
           ports:
-            - containerPort: 8080
-          env:
-            - name: MESSAGE
-              value: "Hello from app1"
+            - containerPort: 5678
 
 ---
 apiVersion: apps/v1
@@ -44,13 +43,12 @@ spec:
         app: app-two
     spec:
       containers:
-        - name: hello-kubernetes
-          image: paulbouwer/hello-kubernetes:1.10.1
+        - name: http-echo
+          image: hashicorp/http-echo:latest
+          args:
+            - "-text=Hello from app2"
           ports:
-            - containerPort: 8080
-          env:
-            - name: MESSAGE
-              value: "Hello from app2"
+            - containerPort: 5678
 
 ---
 apiVersion: apps/v1
@@ -71,10 +69,9 @@ spec:
         app: app-three
     spec:
       containers:
-        - name: hello-kubernetes
-          image: paulbouwer/hello-kubernetes:1.10.1
+        - name: http-echo
+          image: hashicorp/http-echo:latest
+          args:
+            - "-text=Hello from app3"
           ports:
-            - containerPort: 8080
-          env:
-            - name: MESSAGE
-              value: "Hello from app3"
+            - containerPort: 5678

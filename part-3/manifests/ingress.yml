@@ -2,38 +2,16 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: apps-ingress
-  namespace: inception-of-things
+  name: wil-playground
+  namespace: dev
 spec:
   rules:
-    - host: app1.com
-      http:
-        paths:
-          - path: /
-            pathType: Prefix
-            backend:
-              service:
-                name: app-one
-                port:
-                  number: 80
-
-    - host: app2.com
-      http:
-        paths:
-          - path: /
-            pathType: Prefix
-            backend:
-              service:
-                name: app-two
-                port:
-                  number: 80
-
     - http:
         paths:
           - path: /
             pathType: Prefix
             backend:
               service:
-                name: app-three
+                name: wil-playground
                 port:
-                  number: 80
+                  number: 8888

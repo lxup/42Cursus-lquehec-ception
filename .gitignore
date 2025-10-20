@@ -1,3 +1,7 @@
 .vagrant  
 .DS_Store
 *.log
+**/.vagrant
+**/vagrant_shared
+**/token
+part-1/token

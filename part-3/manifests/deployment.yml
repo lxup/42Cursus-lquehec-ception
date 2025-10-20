@@ -1,0 +1,77 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app-one
+  namespace: inception-of-things
+  labels:
+    app: app-one
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app-one
+  template:
+    metadata:
+      labels:
+        app: app-one
+    spec:
+      containers:
+        - name: http-echo
+          image: hashicorp/http-echo:latest
+          args:
+            - "-text=Hello from app1"
+          ports:
+            - containerPort: 5678
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app-two
+  namespace: inception-of-things
+  labels:
+    app: app-two
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: app-two
+  template:
+    metadata:
+      labels:
+        app: app-two
+    spec:
+      containers:
+        - name: http-echo
+          image: hashicorp/http-echo:latest
+          args:
+            - "-text=Hello from app2"
+          ports:
+            - containerPort: 5678
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app-three
+  namespace: inception-of-things
+  labels:
+    app: app-three
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app-three
+  template:
+    metadata:
+      labels:
+        app: app-three
+    spec:
+      containers:
+        - name: http-echo
+          image: hashicorp/http-echo:latest
+          args:
+            - "-text=Hello from app3"
+          ports:
+            - containerPort: 5678
